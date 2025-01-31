@@ -3,37 +3,11 @@
 import pygame
 # Importación de módulos
 import settings
+import player
 
 
 # Inicialización de pygame
 pygame.init()
-
-class Jugador:
-    def __init__(self, x, y, width, height, speed, screen_height):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-        self.speed = speed
-        self.screen_height = screen_height
-
-    def mover(self):
-        self.y += self.speed
-        self.y = max(0, min(self.y, self.screen_height - self.height))
-
-    def dibujar(self, screen, color):
-        pygame.draw.rect(screen, color, (self.x, self.y, self.width, self.height))
-
-    def set_speed(self, speed):
-        self.speed = speed
-
-    def get_speed(self):
-        return self.speed
-
-    def get_rect(self):
-        return pygame.Rect(self.x, self.y, self.width, self.height)
-
-
 
 #Creamos la ventana y el reloj que controla los fps
 screen = pygame.display.set_mode((settings.widthv, settings.heightv))
@@ -56,8 +30,8 @@ pelota_x_speed = 3
 pelota_y_speed = 3
 
 # Instancias de los jugadores
-jugador1 = Jugador(player1_coor_x, player1_coor_y, settings.player_width, settings.player_height, 0, settings.heightv)
-jugador2 = Jugador(player2_coor_x, player2_coor_y, settings.player_width, settings.player_height, 0, settings.heightv)
+jugador1 = player.Player(player1_coor_x, player1_coor_y, settings.player_width, settings.player_height, 0, settings.heightv)
+jugador2 = player.Player(player2_coor_x, player2_coor_y, settings.player_width, settings.player_height, 0, settings.heightv)
 game_over = False # Incialización de la variable de salida
 
 while not game_over:
