@@ -1,13 +1,13 @@
 # **PONGSss** *(Ven y relajate un rato)*
 
 ## **Descripción del Proyecto**
-    Este es un videojuego básico para aquellos apasionados al desarrollo de videojuego.
+    Este es un videojuego básico para aquellos apasionados al desarrollo de videojuego, ya que es un videojuego sencillo de entender, con la implementación de clases y funciones para simplificar los procesos que en este se desarrolla.
 
 ## **Características principales**
 
 1. Sistema de vidas del jugador.
 
-2. Enemigo dinámicos (Pelota)
+2. Enemigo dinámicos (Pelota).
 
 3. Modularidad para mantener el código organizado.
 
@@ -40,7 +40,6 @@ BioQuest
 - |--> main.py (Archivo principal del juego).
 - |--> settings.py (Configuraciones globales del juego (no todas se encuentran aquí, hay algunas que están en otros archivos)).
 - |--> player.py (Clase del jugador (vidas, movimiento, dibujo)).
-- |--> enemy.py (Clase de los enemigos (movimiento y colisiones)).
 - |--> questions_manager.py (Módulo para gestionar preguntas y respuestas).
 - |--> menu_go_ps.py (Funciones para los menús (pausa y game over)).
 - |--> main_menu.py (Menu principal de juego (Inicar a jugar/Salir))
@@ -58,18 +57,16 @@ BioQuest
 - Añadir clase pelota.
 - Añadir menu principal, menú game over y pausa.
 - Añadir sonidos.
-- 
 - Añadir dificultad progresiva a lo largo de un nivel.
 - Añadir más enemigos.
+- Añadir mayor modularidad para simplificar el archivo principal del juego.
 
 ## **Controles del juego**
 
-- W: mover hacia arriba.
+- W: Mover hacia arriba.
 - S: Mover hacia abajo.
-- A: Mover hacia la izquierda.
-- D: Mover hacia la derecha.
-- P: Pausar el juego.
-- Q: Salir del juego.
+- Flecha arriba: Mover hacia arriba.
+- Flecha abajo: Mover hacia abajo.
 
 ## Autor.
 
