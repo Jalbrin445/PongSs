@@ -2,10 +2,8 @@
 # Importación de librerias
 import pygame
 # Importación de módulos
-import settings
-import player
-import music
-import menu_go_ps
+import settings, player, music, C_pantalla, Enemy_Ball
+#import menu_go_ps
 
 
 # Inicialización de pygame
@@ -15,6 +13,9 @@ pygame.init()
 screen = pygame.display.set_mode((settings.widthv, settings.heightv))
 clock = pygame.time.Clock()
 
+# Coordenadas iniciales de la pelota
+pelota = Enemy_Ball.Ball(settings.widthv // 2, settings.heightv // 2, settings.pelota_r, 3, 3)
+
 # Coordenadas del jugador 1
 player1_coor_x = 50
 player1_coor_y = 300 - (settings.player_height // 2)
@@ -23,13 +24,7 @@ player1_coor_y = 300 - (settings.player_height // 2)
 player2_coor_x = 750 - settings.player_width
 player2_coor_y = 300 - (settings.player_height // 2)
 
-# Coordenadas de la pelota
-pelota_coor_x = settings.widthv // 2
-pelota_coor_y = settings.heightv // 2
-
-#Velocidad pelota
-pelota_x_speed = 3
-pelota_y_speed = 3
+# Velocidad de los jugadores
 player1_speed = 0
 player2_speed = 0
 
@@ -37,7 +32,6 @@ player2_speed = 0
 jugador1 = player.Player(player1_coor_x, player1_coor_y, settings.player_width, settings.player_height, player1_speed, settings.heightv)
 jugador2 = player.Player(player2_coor_x, player2_coor_y, settings.player_width, settings.player_height, player2_speed, settings.heightv)
 running = True # Incialización de la variable de salida del bucle principal
-score = 0 # Inicialización de la variable de puntuación
 
 while running:
     # Recorre todos los eventos que pasan con pygame (Evento de teclado, de salida y entre otros)
@@ -72,49 +66,42 @@ while running:
     jugador2.move(player2_speed)
 
     # Movimiento de la pelota
-    pelota_coor_x += pelota_x_speed
-    pelota_coor_y += pelota_y_speed
+    pelota.move()
 
     # Lógica para que no salga de la pantalla la pelota
-    if pelota_coor_y > (settings.heightv - settings.pelota_r) or pelota_coor_y < settings.pelota_r:
-        pelota_y_speed *= -1
+    if pelota.y > (settings.heightv - pelota.radius) or pelota.y < pelota.radius:
+        pelota.bounce_y()
 
     # Verifica si la pelota sale por los bordes izquierdo o derecho de la pantalla, quita vida y reinicia la posición de la pelota
-    if pelota_coor_x <= 0:
+    if pelota.x <= 0:
         jugador1.take_damage()
-        pelota_coor_x = settings.widthv // 2
-        pelota_coor_y = settings.heightv // 2
-        pelota_x_speed *= -1
-        pelota_y_speed *= -1
-    elif pelota_coor_x >= settings.widthv:
+        pelota.reset_position()
+    elif pelota.x >= settings.widthv:
         jugador2.take_damage()
-        pelota_coor_x = settings.widthv // 2
-        pelota_coor_y = settings.heightv // 2
-        pelota_x_speed *= -1
-        pelota_y_speed *= -1
+        pelota.reset_position()
 
     # Verifica si un jugador se queda sin vidas
     if jugador1.lives == 0 or jugador2.lives == 0:
         running = False
 
-    text_score = menu_go_ps.font_scores.render(f"Scores: {score}", True, settings.white)
     # Colisiones
-    pelota_rect = pygame.Rect(pelota_coor_x - settings.pelota_r, pelota_coor_y - settings.pelota_r, settings.pelota_r * 2, settings.pelota_r * 2)
-    if pelota_rect.colliderect(jugador1.get_rect()) or pelota_rect.colliderect(jugador2.get_rect()):
+    if pelota.get_rect().colliderect(jugador1.get_rect()) or pelota.get_rect().colliderect(jugador2.get_rect()):
         music.sonido_colision.play()
-        pelota_x_speed *=-1
-        score += 1
+        pelota.bounce_x()
+        C_pantalla.score += 20
+    
+    # Cambiar color de los jugadores y la pelota si el puntaje es igual o mayor a 100
+    C_pantalla.cambiar_color_PP(C_pantalla.score, pelota, jugador1, jugador2)
 
-    screen.fill(settings.black) # Dibujar el fondo de pantalla
-    # Puntos
-    screen.blit(text_score, (settings.widthv // 2 - 50, 10))
+    # Cambio de pantalla
+    C_pantalla.CambioPantalla(C_pantalla.score)
     
     # Dibujo de jugadores y pelota
     jugador1.draw(screen)
     jugador2.draw(screen)
     jugador1.draw_lives1(screen)
     jugador2.draw_lives2(screen)
-    pelota = pygame.draw.circle(screen, settings.white, (pelota_coor_x, pelota_coor_y), settings.pelota_r)
+    pelota.draw(screen)
 
     # Actualiza pantalla y actualiza reloj 
     pygame.display.flip()

@@ -1,6 +1,7 @@
 import os
 import pygame
 import settings
+import C_pantalla
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -27,7 +28,6 @@ class Player(pygame.sprite.Sprite):
     def draw(self, screen):
         screen.blit(self.image, self.rect) 
 
-
     def draw_lives1(self, screen):
         for i in range(self.lives):
             x = 10 + i * 30
@@ -51,5 +51,8 @@ class Player(pygame.sprite.Sprite):
     
     def get_rect(self):
         return self.rect
+    
+    def change_color(self, color):
+        self.image.fill(color)
 
 
